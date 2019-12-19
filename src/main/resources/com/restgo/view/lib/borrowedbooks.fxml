@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:id="mainPanel" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restgo.controller.lib.BorrowedBooksController">
+    <center>
+        <TableView fx:id="booksTable">
+            <columns>
+                <TableColumn text="Borrower Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="username" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Book Title">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="title" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Taken Date">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="takenDate" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Return Date">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="returnDate" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

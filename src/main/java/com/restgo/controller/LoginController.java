@@ -33,6 +33,10 @@ public class LoginController {
     @FXML
     private Button login;
 
+    public static int userId;
+    public static String userName;
+    public static boolean blocked;
+
     @FXML
     private void handleSubmit(ActionEvent event) throws IOException {
         Window owner = login.getScene().getWindow();
@@ -49,9 +53,8 @@ public class LoginController {
             return;
         }
         if (isUserExist(username,password)){
-            App.setRoot("primary");
-//            AlertHelper.showAlert(Alert.AlertType.CONFIRMATION, owner, "Registration Successful!",
-//                    "Welcome " + this.username.getText());
+            userName = username;
+            App.setRoot("lib","lib");
         }else AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Registration Failed!",
                 "Username or password is wrong");
     }
@@ -65,6 +68,8 @@ public class LoginController {
             statement.setString(2,password);
             rs = statement.executeQuery();
             if (rs.next()){
+                userId = rs.getInt("id");
+                blocked = rs.getBoolean("blocked");
                 return true;
             }
         } catch (SQLException e) {

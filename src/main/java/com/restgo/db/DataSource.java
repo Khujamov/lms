@@ -5,10 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataSource {
-    private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://db4free.net:3306/lmsiutdb";
-    private static final String PASSWORD = "LdUCjUcsXy#2J@4";
-    private static final String USERNAME = "lms1234";
+//    private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://db4free.net:3306/lmsiutdb";
+//    private static final String PASSWORD = "LdUCjUcsXy#2J@4";
+//    private static final String USERNAME = "lms1234";
+    private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/testdb";
+    private static final String PASSWORD = "kokand07";
+    private static final String USERNAME = "postgres";
     private static DataSource instance;
     private Connection connection;
 
