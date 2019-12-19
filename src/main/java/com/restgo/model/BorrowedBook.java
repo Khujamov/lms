@@ -10,6 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BorrowedBook {
+    private int userId;
     private String username;
     private String title;
     private Date takenDate;

@@ -39,7 +39,7 @@ public class AdminController {
     public void initialize() {
         pane = mainFrame;
         username.setText(LoginController.userName);
-        panelName.setText("Empty Panel");
+        panelName.setText("Admin Panel");
     }
 
     @FXML

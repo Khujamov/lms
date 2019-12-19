@@ -14,6 +14,7 @@ public class StudentService {
     private CallableStatement cs;
     private ResultSet rs;
     private ObservableList<User> users;
+    private ObservableList<User> blockedUsersList = FXCollections.observableArrayList();
 
     private final String newContact = "call insert_student(?,?)";
     private final String allContacts = "select u.id,u.username,u.password from users u\n" +
@@ -21,9 +22,14 @@ public class StudentService {
             "inner join roles r on ur.role_id = r.id where r.id = 30;";
     private final String updateContact = "UPDATE users SET username = ? , password = ?  WHERE id = ?";
     private final String deleteContact = "DELETE FROM users WHERE id = ?";
-
+    private final String blockUser = "UPDATE users SET blocked = ?  WHERE id = ?";
+    private final String blockedUsers = "select * from users where blocked = '1'";
     public StudentService() {
         users = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<User> getBlockedUsersList() {
+        return blockedUsersList;
     }
 
     public ObservableList<User> getContacts() {
@@ -37,6 +43,26 @@ public class StudentService {
             rs = statement.executeQuery();
             while (rs.next()){
                 users.add(new User(rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.done(rs);
+            DBUtils.done(statement);
+            DBUtils.done(connection);
+        }
+
+    }
+
+    public void loadBlockedUsersFromDb() {
+        try {
+            connection = DataSource.getInstance().getConnection();
+            statement = connection.prepareStatement(blockedUsers);
+            rs = statement.executeQuery();
+            while (rs.next()){
+                blockedUsersList.add(new User(rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password")));
             }
@@ -86,6 +112,38 @@ public class StudentService {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.done(rs);
+            DBUtils.done(statement);
+            DBUtils.done(connection);
+        }
+    }
+
+    public void blockUser(int userId){
+        try {
+            connection = DataSource.getInstance().getConnection();
+            statement = connection.prepareStatement(blockUser);
+            statement.setBoolean(1,true);
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtils.done(rs);
+            DBUtils.done(statement);
+            DBUtils.done(connection);
+        }
+    }
+
+    public void unblockUser(int userId){
+        try {
+            connection = DataSource.getInstance().getConnection();
+            statement = connection.prepareStatement(blockUser);
+            statement.setBoolean(1,false);
+            statement.setInt(2, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

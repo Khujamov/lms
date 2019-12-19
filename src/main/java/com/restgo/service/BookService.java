@@ -32,7 +32,7 @@ public class BookService {
             "inner join users u on bb.user_id = u.id\n" +
             "where u.id = ?";
     private final String returnBook = "call return_book(?)";
-    private final String allBorrowedBooks = "select b.*,u.username,bb.taken_date,bb.return_date from books b \n" +
+    private final String allBorrowedBooks = "select b.*,u.username,u.id as userId,bb.taken_date,bb.return_date from books b \n" +
             "inner join borrowed_books bb on bb.book_id = b.id\n" +
             "inner join users u on bb.user_id = u.id;";
 
@@ -130,8 +130,9 @@ public class BookService {
             statement = connection.prepareStatement(allBorrowedBooks);
             rs = statement.executeQuery();
             while (rs.next()){
-                borrowedBooksList.add(new BorrowedBook(rs.getString("title"),
+                borrowedBooksList.add(new BorrowedBook(rs.getInt("userId"),
                         rs.getString("username"),
+                        rs.getString("title"),
                         rs.getDate("taken_date"),
                         rs.getDate("return_date")));
             }

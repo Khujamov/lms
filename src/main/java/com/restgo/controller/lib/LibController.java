@@ -62,8 +62,9 @@ public class LibController {
     }
 
     @FXML
-    public void setBlockedReadersListPane(){
-
+    public void setBlockedReadersListPane() throws IOException {
+        panelName.setText("Blocked Users");
+        mainFrame.setCenter(App.loadFXML("lib","blockedusers"));
     }
 
     @FXML
@@ -74,5 +75,9 @@ public class LibController {
 
     public static void updateUI(String fxml) throws IOException {
         pane.setCenter(App.loadFXML("admin",fxml));
+    }
+
+    public static void updateBlockedUI(String fxml) throws IOException {
+        pane.setCenter(App.loadFXML("lib",fxml));
     }
 }
