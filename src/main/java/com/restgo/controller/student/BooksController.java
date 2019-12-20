@@ -1,11 +1,8 @@
 package com.restgo.controller.student;
 
-import com.restgo.App;
 import com.restgo.controller.LoginController;
-import com.restgo.controller.admin.BookDialogController;
 import com.restgo.model.Book;
 import com.restgo.service.BookService;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,9 +27,12 @@ public class BooksController {
     public void initialize() throws SQLException {
         service = new BookService();
         service.loadBorrowedBooks();
+        if(LoginController.blocked){
+            borrow.setDisable(true);
+            message.setText("You are blocked by librarian");
+           return;
+        }
         booksTable.setItems(service.getBorrowedBooks());
-//        delete.setDisable(true);
-//        edit.setDisable(true);
     }
 
     @FXML
