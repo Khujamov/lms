@@ -36,6 +36,7 @@ public class LoginController {
     public static int userId;
     public static String userName;
     public static boolean blocked;
+    public static int roleId;
 
     @FXML
     private void handleSubmit(ActionEvent event) throws IOException {
@@ -54,7 +55,17 @@ public class LoginController {
         }
         if (isUserExist(username,password)){
             userName = username;
-            App.setRoot("lib","lib");
+            switch (roleId){
+                case 10:
+                    App.setRoot("admin","admin");
+                    break;
+                case 20:
+                    App.setRoot("lib","lib");
+                    break;
+                case 30:
+                    App.setRoot("student","student");
+                    break;
+            }
         }else AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Registration Failed!",
                 "Username or password is wrong");
     }
@@ -63,13 +74,17 @@ public class LoginController {
         try {
             dataSource = DataSource.getInstance();
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement("Select * from users u where u.username = ? and u.password = ?");
+            statement = connection.prepareStatement("select u.id,u.blocked,r.id as role_id from users u\n" +
+                    "inner join user_roles ur on ur.user_id = u.id\n" +
+                    "inner join roles r on r.id = ur.role_id\n" +
+                    "where u.username = ? and u.password = ?");
             statement.setString(1,username);
             statement.setString(2,password);
             rs = statement.executeQuery();
             if (rs.next()){
                 userId = rs.getInt("id");
                 blocked = rs.getBoolean("blocked");
+                roleId = rs.getInt("role_id");
                 return true;
             }
         } catch (SQLException e) {
